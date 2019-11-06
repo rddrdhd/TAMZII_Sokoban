@@ -43,6 +43,7 @@ public class SokoView extends View{
     private int getCoor(int x, int y){
         return y*10+x;
     }
+    private int heroCoor() {return heroY*10+heroX;}
 
 
 
@@ -76,6 +77,8 @@ public class SokoView extends View{
     float xDown;
     float yDown;
     int touches = 0;
+    int xDisplay;
+    int yDisplay;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -105,36 +108,46 @@ public class SokoView extends View{
         return super.onTouchEvent(event);
     }
 
-    private void move(String direction){
-        int x = heroX;
-        int y = heroY;
+    private void move(String d){
+        int newHeroCoor = getCoor(heroX, heroY);
 
-        level[getCoor(heroX, heroY)] = 0;
+        if(d == "right" || d == "left" || d == "up" || d == "down"){
 
-        switch(direction){
-            case "right":
-                level[getCoor(heroX+1, heroY)] = 4;
-                heroX++;
-                break;
-            case "left":
-                level[getCoor(heroX-1, heroY)] = 4;
-                heroX--;
-                break;
-            case "up":
-                level[getCoor(heroX, heroY-1)] = 4;
-                heroY--;
-                break;
-            case "down":
-                level[getCoor(heroX, heroY+1)] = 4;
-                heroY++;
-                break;
-            default:
+            switch(d){
+                case "right":
+                    if(canMove("right")){
+                        level[getCoor(heroX, heroY)] = 0;
+                        newHeroCoor=getCoor(++heroX, heroY);
+                    }
+                    break;
+                case "left":
+                    if(canMove("left")){
+                        level[getCoor(heroX, heroY)] = 0;
+                        newHeroCoor=getCoor(--heroX, heroY);
+                    }
+                    break;
+                case "up":
+                    if(canMove("up")){
+                        level[getCoor(heroX, heroY)] = 0;
+                        newHeroCoor=getCoor(heroX, --heroY);
+                    }
+                    break;
+                case "down":
+                    if(canMove("down")){
+                        level[getCoor(heroX, heroY)] = 0;
+                        newHeroCoor=getCoor(heroX, ++heroY);
+                    }
+                    break;
+                default:
+                    Toast.makeText(getContext(), "default", Toast.LENGTH_SHORT).show();
+                    break;
 
-                Toast.makeText(getContext(), "default", Toast.LENGTH_SHORT).show();
-                break;
 
-
+            }
         }
+        level[newHeroCoor] = 4;
+
+
 
 
         invalidate(); //překreslení
@@ -142,20 +155,24 @@ public class SokoView extends View{
 
     private boolean standingOnCross = false;
     private boolean canMove(String direction){
-        if (heroX<6&&direction=="up") return false;
-       /* switch(direction){
+       switch(direction){
             case "left":
-                if (level[getCoor(heroX-1, heroY)])
-                break;
+                if (heroX < 1) return false;
+                if (level[heroCoor()-1] == 1) return false;
+                return true;
             case "right":
-                break;
+                if (heroX > 9) return false;
+                if (level[heroCoor()+1] == 1) return false;
+                return true;
             case "up":
+                if (level[getCoor(heroX, heroY-1)] == 1) return false;
                 break;
             case "down":
+                if (level[getCoor(heroX, heroY+1)] == 1) return false;
                 break;
             default:
                 return true;
-        }*/
+        }
 
         return true;
     }
@@ -164,6 +181,9 @@ public class SokoView extends View{
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         width = w / ly;
         height = h / lx;
+
+        xDisplay = (int) w;
+        yDisplay = (int) h;
         super.onSizeChanged(w, h, oldw, oldh);
     }
 

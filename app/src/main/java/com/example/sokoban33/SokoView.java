@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 /**
  * Created by kru13 on 12.10.16.
  */
@@ -108,43 +110,47 @@ public class SokoView extends View{
         return super.onTouchEvent(event);
     }
 
+    private boolean standingOnCross = false;
     private void move(String d){
         int newHeroCoor = getCoor(heroX, heroY);
 
-        if(d == "right" || d == "left" || d == "up" || d == "down"){
+
+        if(Objects.equals(d, "right")
+                || Objects.equals(d, "left")
+                || Objects.equals(d, "up")
+                || Objects.equals(d, "down")){
 
             switch(d){
                 case "right":
-                    if(canMove("right")){
-                        level[getCoor(heroX, heroY)] = 0;
+                    if(notWall("right")){
+                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
                         newHeroCoor=getCoor(++heroX, heroY);
                     }
                     break;
                 case "left":
-                    if(canMove("left")){
-                        level[getCoor(heroX, heroY)] = 0;
+                    if(notWall("left")){
+                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
                         newHeroCoor=getCoor(--heroX, heroY);
                     }
                     break;
                 case "up":
-                    if(canMove("up")){
-                        level[getCoor(heroX, heroY)] = 0;
+                    if(notWall("up")){
+                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
                         newHeroCoor=getCoor(heroX, --heroY);
                     }
                     break;
                 case "down":
-                    if(canMove("down")){
-                        level[getCoor(heroX, heroY)] = 0;
+                    if(notWall("down")){
+                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
                         newHeroCoor=getCoor(heroX, ++heroY);
                     }
                     break;
                 default:
                     Toast.makeText(getContext(), "default", Toast.LENGTH_SHORT).show();
                     break;
-
-
             }
         }
+        standingOnCross = (level[newHeroCoor] == 3); //bool
         level[newHeroCoor] = 4;
 
 
@@ -153,15 +159,12 @@ public class SokoView extends View{
         invalidate(); //překreslení
     }
 
-    private boolean standingOnCross = false;
-    private boolean canMove(String direction){
+    private boolean notWall(String direction){
        switch(direction){
             case "left":
-                if (heroX < 1) return false;
                 if (level[heroCoor()-1] == 1) return false;
                 return true;
             case "right":
-                if (heroX > 9) return false;
                 if (level[heroCoor()+1] == 1) return false;
                 return true;
             case "up":

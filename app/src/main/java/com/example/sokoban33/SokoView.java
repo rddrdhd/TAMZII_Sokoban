@@ -10,7 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 /**
  * Created by kru13 on 12.10.16.
@@ -113,50 +115,86 @@ public class SokoView extends View{
     private boolean standingOnCross = false;
     private void move(String d){
         int newHeroCoor = getCoor(heroX, heroY);
+        String[] directions = {"right","up","down","left"};
 
 
-        if(Objects.equals(d, "right")
-                || Objects.equals(d, "left")
-                || Objects.equals(d, "up")
-                || Objects.equals(d, "down")){
+        if(Arrays.asList(directions).contains(d)){
+            if(notWall(d)){//pokud neleze do zdi
+                if(isPushigBox(d)){
+                    pushBox(d);
+                }
 
-            switch(d){
-                case "right":
-                    if(notWall("right")){
-                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
+                level[heroCoor()] = standingOnCross ? 3 : 0;
+                switch(d){
+
+                    case "right":
+
                         newHeroCoor=getCoor(++heroX, heroY);
-                    }
-                    break;
-                case "left":
-                    if(notWall("left")){
-                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
+                        break;
+                    case "left":
+
                         newHeroCoor=getCoor(--heroX, heroY);
-                    }
-                    break;
-                case "up":
-                    if(notWall("up")){
-                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
+                        break;
+                    case "up":
+
                         newHeroCoor=getCoor(heroX, --heroY);
-                    }
-                    break;
-                case "down":
-                    if(notWall("down")){
-                        level[getCoor(heroX, heroY)] = standingOnCross?3:0;
+                        break;
+                    case "down":
+
                         newHeroCoor=getCoor(heroX, ++heroY);
-                    }
-                    break;
-                default:
-                    Toast.makeText(getContext(), "default", Toast.LENGTH_SHORT).show();
-                    break;
+                        break;
+                    default:
+                        Toast.makeText(getContext(), "wth", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
             }
         }
-        standingOnCross = (level[newHeroCoor] == 3); //bool
-        level[newHeroCoor] = 4;
 
-
-
+        standingOnCross = (level[newHeroCoor] == 3); //da zpatky krizek pokud na nem stal
+        level[newHeroCoor] = 4;//presune postavicku na aktualni polohu
 
         invalidate(); //překreslení
+    }
+
+
+    private void pushBox(String direction){
+        if(notWall(direction)){
+            switch(direction){
+                case "left":
+                    level[getCoor(heroX-2,heroY)]=2;
+                    break;
+                case "right":
+                    level[getCoor(heroX+2,heroY)]=2;
+                    break;
+                case "up":
+                    level[getCoor(heroX,heroY-2)]=2;
+                    break;
+                case "down":
+                    level[getCoor(heroX,heroY+2)]=2;
+                    break;
+                default:
+            }
+        }
+    }
+    private boolean isPushigBox(String direction){
+        switch(direction){
+            case "left":
+                if (level[heroCoor()-1] != 2) return false;
+                return true;
+            case "right":
+                if (level[heroCoor()+1] != 2) return false;
+                return true;
+            case "up":
+                if (level[getCoor(heroX, heroY-1)] != 2) return false;
+                break;
+            case "down":
+                if (level[getCoor(heroX, heroY+1)] != 2) return false;
+                break;
+            default:
+                return true;
+        }
+        return true;
     }
 
     private boolean notWall(String direction){
@@ -176,7 +214,6 @@ public class SokoView extends View{
             default:
                 return true;
         }
-
         return true;
     }
 

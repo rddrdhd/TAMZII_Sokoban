@@ -2,7 +2,7 @@ package com.example.sokoban33;
 
 public class E {
 //globals
-    public static int actualLevel = 0;
+    public static int actualLevel = 1;
 
 //constants
     public static final int LEFT = 0;

@@ -1,12 +1,16 @@
-package com.vsb.kru13.sokoban;
+package com.example.sokoban33;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Created by kru13 on 12.10.16.
@@ -18,21 +22,11 @@ public class SokoView extends View{
     int lx = 10;
     int ly = 10;
 
+
+
     int width;
     int height;
-
-    private int level[] = {
-            1,1,1,1,1,1,1,1,1,0,
-            1,0,0,0,0,0,0,0,1,0,
-            1,0,2,3,3,2,1,0,1,0,
-            1,0,1,3,2,3,2,0,1,0,
-            1,0,2,3,3,2,4,0,1,0,
-            1,0,1,3,2,3,2,0,1,0,
-            1,0,2,3,3,2,1,0,1,0,
-            1,0,0,0,0,0,0,0,1,0,
-            1,1,1,1,1,1,1,1,1,0,
-            0,0,0,0,0,0,0,0,0,0
-    };
+    GameObject hero = new GameObject(6, 4);
 
     public SokoView(Context context) {
         super(context);
@@ -62,18 +56,47 @@ public class SokoView extends View{
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN: {
+
+                touches++;
+                xDown = event.getX();
+
+                yDown = event.getY();
+
+                if(xDown>500&&yDown<1500&&yDown>500)  hero.moveRight();
+                else if(xDown<500&&yDown<1500&&yDown>500) Log.i("sokoView", "LEFT - X: "+xDown+", Y: "+yDown);
+                else if(yDown>1500) Log.i("sokoView", "DOWN - X: "+xDown+", Y: "+yDown);
+                else if(yDown<500) Log.i("sokoView", "UP - X: "+xDown+", Y: "+yDown);
+                else Log.i("sokoView", "X: "+xDown+", Y: "+yDown);
+                invalidate();
+                break;
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    float xDown;
+    float yDown;
+    int touches = 0;
+    int xDisplay;
+    int yDisplay;
+
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         width = w / ly;
         height = h / lx;
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
 
         for (int i = 0; i < lx; i++) {
             for (int j = 0; j < ly; j++) {
-                canvas.drawBitmap(bmp[level[i*10 + j]], null,
+                canvas.drawBitmap(bmp[E.LEVELS[0][i*10 + j]], null,
                         new Rect(j*width, i*height,(j+1)*width, (i+1)*height), null);
             }
         }

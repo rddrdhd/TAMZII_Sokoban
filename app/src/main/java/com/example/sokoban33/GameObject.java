@@ -2,16 +2,20 @@ package com.example.sokoban33;
 
 import android.util.Log;
 
+import java.util.Arrays;
+
 public class GameObject {
     public int posX, posY;
     public boolean canGoUp, canGoLeft, canGoRight, canGoDown;
     public boolean boxIsLeft, boxIsRight, boxIsUp, boxIsDown;
     private int[] level;
+    private boolean canMove;
 
     GameObject(int x, int y){
         this.posX = x;
         this.posY = y;
         level = E.actualLevelArray.clone();
+        this.canMove = true;
     }
 
     private static int getCoor(int x, int y){
@@ -34,56 +38,76 @@ public class GameObject {
 
         level[heroCoor()] = E.EMPTY; //erase hero
 
+        canMove = true;
         switch(direction){
             case E.RIGHT:
                 if(boxIsRight)pushBox(E.RIGHT);
-                if(this.canGoRight)this.posX++;
+                if(this.canGoRight&&canMove)this.posX++;
                 break;
             case E.LEFT:
                 if(boxIsLeft)pushBox(E.LEFT);
-                if(this.canGoLeft)this.posX--;
+                if(this.canGoLeft&&canMove)this.posX--;
                 break;
             case E.UP:
                 if(boxIsUp)pushBox(E.UP);
-                if(this.canGoUp)this.posY--;
+                if(this.canGoUp&&canMove)this.posY--;
                 break;
             case E.DOWN:
                 if(boxIsDown)pushBox(E.DOWN);
-                if(this.canGoDown)this.posY++;
+                if(this.canGoDown&&canMove)this.posY++;
                 break;
         }
-
+        if(won()){
+            Log.i("push","You WON");
+        }
         level[heroCoor()] = E.HERO; //write hero
         E.actualLevelArray = level;
+
 
     }
 
     private void pushBox(int direction){
-        int oldBoxCoor ;
+        int oldBoxCoor;
+        int newCoor;
         int newBoxCoor;
+
         switch (direction){
             case E.RIGHT:
                 oldBoxCoor = getCoor(this.posX+1, this.posY);
-                newBoxCoor = getCoor(this.posX+2, this.posY);
+                newCoor = getCoor(this.posX+2, this.posY);
                 break;
             case E.LEFT:
                 oldBoxCoor = getCoor(this.posX-1, this.posY);
-                newBoxCoor = getCoor(this.posX-2, this.posY);
+                newCoor = getCoor(this.posX-2, this.posY);
                 break;
             case E.UP:
                 oldBoxCoor = getCoor(this.posX, this.posY-1);
-                newBoxCoor = getCoor(this.posX, this.posY-2);
+                newCoor = getCoor(this.posX, this.posY-2);
                 break;
             case E.DOWN:
                 oldBoxCoor = getCoor(this.posX, this.posY+1);
-                newBoxCoor = getCoor(this.posX, this.posY+2);
+                newCoor = getCoor(this.posX, this.posY+2);
                 break;
             default:
                 oldBoxCoor = heroCoor();
-                newBoxCoor = oldBoxCoor;
+                newCoor = oldBoxCoor;
         }
 
+        if(level[newCoor]!=E.BOX && level[newCoor]!=E.BOXOK && level[newCoor]!=E.WALL){
+            newBoxCoor = newCoor;
+        } else {
+            newBoxCoor = oldBoxCoor;
+            canMove = false;
+        }
         level[oldBoxCoor] = E.EMPTY;
         level[newBoxCoor] = E.BOX;
+    }
+
+    public boolean won(){ //TODO: vrátí true až po dalším kliknutí
+        boolean won = true;
+        for(int i = 0; i< level.length; i++){
+            if(level[i]==E.BOX) won = false;
+        }
+        return won;
     }
 }

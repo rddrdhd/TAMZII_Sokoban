@@ -25,7 +25,7 @@ public class SokoView extends View{
 
     int width;
     int height;
-    GameObject hero = new GameObject(1,1);
+    GameObject hero = new GameObject(6,4);
 
     public SokoView(Context context) {
         super(context);

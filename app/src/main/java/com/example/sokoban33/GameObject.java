@@ -18,10 +18,10 @@ public class GameObject {
     public int heroCoor() {return this.posY*10+this.posX;}
 
     public void move(int direction) {
-        canGoRight = (this.posX<9);
-        canGoLeft = (this.posX>0);
-        canGoUp = (this.posY>0);
-        canGoDown = (this.posY<9);
+        canGoRight = (this.posX<9) && (E.LEVELS[0][getCoor(this.posX+1, this.posY)]!=E.WALL);
+        canGoLeft = (this.posX>0)&& (E.LEVELS[0][getCoor(this.posX-1, this.posY)]!=E.WALL);
+        canGoUp = (this.posY>0)&& (E.LEVELS[0][getCoor(this.posX, this.posY-1)]!=E.WALL);
+        canGoDown = (this.posY<9)&& (E.LEVELS[0][getCoor(this.posX, this.posY+1)]!=E.WALL);
         //Log.i("HeroPos", heroCoor()+": UP?"+canGoUp+" DOWN?"+canGoDown+" LEFT?"+canGoLeft+" RIGHT?"+canGoRight);
 
         E.actualLevel[heroCoor()] = E.EMPTY; //sma

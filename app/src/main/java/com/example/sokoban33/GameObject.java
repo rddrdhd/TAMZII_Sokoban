@@ -5,10 +5,15 @@ import android.util.Log;
 public class GameObject {
     public int posX, posY;
     public boolean canGoUp, canGoLeft, canGoRight, canGoDown;
+    private int[] level;
+
+
+
 
     GameObject(int x, int y){
         this.posX = x;
         this.posY = y;
+        level = E.actualLevelArray.clone();
     }
 
     public static int getCoor(int x, int y){
@@ -18,13 +23,13 @@ public class GameObject {
     public int heroCoor() {return this.posY*10+this.posX;}
 
     public void move(int direction) {
-        canGoRight = (this.posX<9) && (E.LEVELS[0][getCoor(this.posX+1, this.posY)]!=E.WALL);
-        canGoLeft = (this.posX>0)&& (E.LEVELS[0][getCoor(this.posX-1, this.posY)]!=E.WALL);
-        canGoUp = (this.posY>0)&& (E.LEVELS[0][getCoor(this.posX, this.posY-1)]!=E.WALL);
-        canGoDown = (this.posY<9)&& (E.LEVELS[0][getCoor(this.posX, this.posY+1)]!=E.WALL);
+        canGoRight = (this.posX<9) && (level[getCoor(this.posX+1, this.posY)]!=E.WALL);
+        canGoLeft = (this.posX>0)&& (level[getCoor(this.posX-1, this.posY)]!=E.WALL);
+        canGoUp = (this.posY>0)&& (level[getCoor(this.posX, this.posY-1)]!=E.WALL);
+        canGoDown = (this.posY<9)&& (level[getCoor(this.posX, this.posY+1)]!=E.WALL);
         //Log.i("HeroPos", heroCoor()+": UP?"+canGoUp+" DOWN?"+canGoDown+" LEFT?"+canGoLeft+" RIGHT?"+canGoRight);
 
-        E.actualLevel[heroCoor()] = E.EMPTY; //sma
+        level[heroCoor()] = E.EMPTY; //sma
 
         switch(direction){
             case E.RIGHT:
@@ -41,7 +46,9 @@ public class GameObject {
                 break;
         }
 
-        E.actualLevel[heroCoor()] = E.HERO;
+        level[heroCoor()] = E.HERO;
+
+        E.actualLevelArray = level;
 
     }
 }

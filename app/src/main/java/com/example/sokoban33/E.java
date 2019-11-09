@@ -27,6 +27,6 @@ public class E {
             1,1,1,1,1,1,1,1,1,0,
             0,0,0,0,0,0,0,0,0,0}
     };
-
-    public static int[] actualLevel = LEVELS[0];
+    public static int actualLevel = 0;
+    public static int[] actualLevelArray = LEVELS[actualLevel];
 }

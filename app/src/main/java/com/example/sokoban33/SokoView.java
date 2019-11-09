@@ -19,6 +19,8 @@ public class SokoView extends View{
 
     Bitmap[] bmp;
 
+
+    int[] level = E.actualLevelArray.clone();
     int lx = 10;
     int ly = 10;
 
@@ -61,7 +63,6 @@ public class SokoView extends View{
 
                 touches++;
                 xDown = event.getX();
-
                 yDown = event.getY();
 
                 if(xDown>500&&yDown<1500&&yDown>500)  hero.move(E.RIGHT);
@@ -70,11 +71,24 @@ public class SokoView extends View{
                 else if(yDown<500) hero.move(E.UP);
                 else Log.i("sokoView", "X: "+xDown+", Y: "+yDown);
 
+                repairCrosses();
+
                 invalidate();
+
                 break;
             }
         }
         return super.onTouchEvent(event);
+    }
+
+    public void repairCrosses(){
+        for(int i = 0; i<level.length; i++){
+            if(level[i]!=E.actualLevelArray[i]) Log.i("HeroPos", "level: "+level[i]+". E level:"+E.actualLevelArray[i]);
+            if(level[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY) E.actualLevelArray[i]=E.CROSS;
+            if(level[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX) E.actualLevelArray[i]=E.BOXOK;
+
+        }
+        Log.i("HeroPos", "__________________________________");
     }
 
     float xDown;
@@ -94,7 +108,7 @@ public class SokoView extends View{
 
         for (int i = 0; i < lx; i++) {
             for (int j = 0; j < ly; j++) {
-                canvas.drawBitmap(bmp[E.LEVELS[0][i*10 + j]], null,
+                canvas.drawBitmap(bmp[E.actualLevelArray[i*10 + j]], null,
                         new Rect(j*width, i*height,(j+1)*width, (i+1)*height), null);
             }
         }

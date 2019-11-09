@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * Created by kru13 on 12.10.16.
@@ -71,8 +73,11 @@ public class SokoView extends View{
             else if (yDown < 500) hero.move(E.UP);
 
             fixArray();
+            invalidate(); //redraw array
 
-            invalidate();
+            if(hero.won()){
+                Toast.makeText(getContext(), "You won! ("+touches+" touches)", Toast.LENGTH_LONG).show();
+            }
         }
         return super.onTouchEvent(event);
     }

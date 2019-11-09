@@ -47,7 +47,6 @@ class GameObject {
         }
 
         //after moving
-        if(won()){ Log.i("game","You WON"); }
         level[heroCoor()] = E.HERO;
         E.actualLevelArray = level;
 
@@ -111,7 +110,7 @@ class GameObject {
         level[newBoxCoor] = E.BOX;
     }
 
-    private boolean won(){ //TODO: vrátí true až po dalším kliknutí
+    public boolean won(){
         boolean won = true;
         for (int value : level) {
             if (value == E.BOX) won = false;

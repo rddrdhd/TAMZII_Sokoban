@@ -20,12 +20,13 @@ public class E {
 
 
     public static final int[][] STARTING_POSITIONS = {
-            {6,4}
+            {6,4},//0. level
+            {6,4},//1. level
     };
 
 
     public static final int[][] LEVELS = {
-        {//0
+        {//0. level
             1,1,1,1,1,1,1,1,1,0,
             1,0,0,0,0,0,0,0,1,0,
             1,0,2,3,0,0,1,0,1,0,
@@ -36,7 +37,7 @@ public class E {
             1,0,0,0,0,0,0,0,1,0,
             1,1,1,1,1,1,1,1,1,0,
             0,0,0,0,0,0,0,0,0,0
-        }, {//1
+        }, {//1. level
             1,1,1,1,1,1,1,1,1,0,
             1,0,0,0,0,0,0,0,1,0,
             1,0,2,3,3,2,1,0,1,0,
@@ -52,6 +53,6 @@ public class E {
 
 
     public static int[] actualLevelArray = LEVELS[actualLevel];
-    public static final int startX = STARTING_POSITIONS[actualLevel][0];
-    public static final int startY = STARTING_POSITIONS[actualLevel][1];
+    public static int startX = STARTING_POSITIONS[actualLevel][0];
+    public static int startY = STARTING_POSITIONS[actualLevel][1];
 }

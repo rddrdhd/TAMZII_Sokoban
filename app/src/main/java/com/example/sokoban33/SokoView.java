@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -18,14 +17,19 @@ public class SokoView extends View{
 
     Bitmap[] bmp;
 
+    GameObject hero = new GameObject(E.startX,E.startY);
     int[] originalLevel = E.actualLevelArray.clone();
+
     int lx = 10;
     int ly = 10;
 
-
     int width;
     int height;
-    GameObject hero = new GameObject(E.startX,E.startY);
+
+    float xDown;
+    float yDown;
+
+    int touches = 0;
 
     public SokoView(Context context) {
         super(context);
@@ -51,7 +55,6 @@ public class SokoView extends View{
         bmp[3] = BitmapFactory.decodeResource(getResources(), R.drawable.goal);
         bmp[4] = BitmapFactory.decodeResource(getResources(), R.drawable.hero);
         bmp[5] = BitmapFactory.decodeResource(getResources(), R.drawable.boxok);
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -66,28 +69,20 @@ public class SokoView extends View{
             else if (xDown < 500 && yDown < 1500 && yDown > 500) hero.move(E.LEFT);
             else if (yDown > 1500) hero.move(E.DOWN);
             else if (yDown < 500) hero.move(E.UP);
-            else Log.i("sokoView", "X: " + xDown + ", Y: " + yDown);
 
-            repairCrosses();
+            fixArray();
 
             invalidate();
         }
         return super.onTouchEvent(event);
     }
 
-    public void repairCrosses(){
+    private void fixArray(){
         for(int i = 0; i< originalLevel.length; i++){
-            if(originalLevel[i]!=E.actualLevelArray[i]) Log.i("HeroPos", "originalLevel: "+ originalLevel[i]+". E originalLevel:"+E.actualLevelArray[i]);
             if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY) E.actualLevelArray[i]=E.CROSS;
             if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX) E.actualLevelArray[i]=E.BOXOK;
-
         }
-        Log.i("HeroPos", "__________________________________");
     }
-
-    float xDown;
-    float yDown;
-    int touches = 0;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

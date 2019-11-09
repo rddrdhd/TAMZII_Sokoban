@@ -2,14 +2,10 @@ package com.example.sokoban33;
 
 import android.util.Log;
 
-import java.util.Arrays;
-
-public class GameObject {
-    public int posX, posY;
-    public boolean canGoUp, canGoLeft, canGoRight, canGoDown;
-    public boolean boxIsLeft, boxIsRight, boxIsUp, boxIsDown;
+class GameObject {
+    private int posX, posY;
     private int[] level;
-    private boolean canMove;
+    private boolean canMove, canGoLeft, canGoRight, canGoUp, canGoDown, boxIsLeft, boxIsRight, boxIsUp, boxIsDown;
 
     GameObject(int x, int y){
         this.posX = x;
@@ -18,52 +14,63 @@ public class GameObject {
         this.canMove = true;
     }
 
-    private static int getCoor(int x, int y){
-        return y*10+x;
-    }
+    private static int getCoor(int x, int y) { return y*10+x; }
 
-    private int heroCoor() {return this.posY*10+this.posX;}
+    private int heroCoor() { return this.posY*10+this.posX; }
 
     void move(int direction) {
-        canGoRight = (this.posX<9) && (level[getCoor(this.posX+1, this.posY)]!=E.WALL);
-        canGoLeft = (this.posX>0)&& (level[getCoor(this.posX-1, this.posY)]!=E.WALL);
-        canGoUp = (this.posY>0)&& (level[getCoor(this.posX, this.posY-1)]!=E.WALL);
-        canGoDown = (this.posY<9)&& (level[getCoor(this.posX, this.posY+1)]!=E.WALL);
 
-        boxIsLeft = (level[getCoor(this.posX-1, this.posY)]==E.BOX ||level[getCoor(this.posX-1, this.posY)]==E.BOXOK);
-        boxIsRight = (level[getCoor(this.posX+1, this.posY)]==E.BOX || level[getCoor(this.posX+1, this.posY)]==E.BOXOK);
-        boxIsUp = (level[getCoor(this.posX, this.posY-1)]==E.BOX || level[getCoor(this.posX, this.posY-1)]==E.BOXOK);
-        boxIsDown = (level[getCoor(this.posX, this.posY+1)]==E.BOX ||level[getCoor(this.posX, this.posY+1)]==E.BOXOK);
-        //Log.i("HeroPos", heroCoor()+": UP?"+canGoUp+" DOWN?"+canGoDown+" LEFT?"+canGoLeft+" RIGHT?"+canGoRight);
+        mapDirections();
 
-        level[heroCoor()] = E.EMPTY; //erase hero
+        //before moving
+        level[heroCoor()] = E.EMPTY;
 
+        //moving
         canMove = true;
         switch(direction){
             case E.RIGHT:
                 if(boxIsRight)pushBox(E.RIGHT);
-                if(this.canGoRight&&canMove)this.posX++;
+                if(canGoRight&&canMove)this.posX++;
                 break;
             case E.LEFT:
                 if(boxIsLeft)pushBox(E.LEFT);
-                if(this.canGoLeft&&canMove)this.posX--;
+                if(canGoLeft&&canMove)this.posX--;
                 break;
             case E.UP:
                 if(boxIsUp)pushBox(E.UP);
-                if(this.canGoUp&&canMove)this.posY--;
+                if(canGoUp&&canMove)this.posY--;
                 break;
             case E.DOWN:
                 if(boxIsDown)pushBox(E.DOWN);
-                if(this.canGoDown&&canMove)this.posY++;
+                if(canGoDown&&canMove)this.posY++;
                 break;
         }
-        if(won()){
-            Log.i("push","You WON");
-        }
-        level[heroCoor()] = E.HERO; //write hero
+
+        //after moving
+        if(won()){ Log.i("game","You WON"); }
+        level[heroCoor()] = E.HERO;
         E.actualLevelArray = level;
 
+    }
 
+    private void mapDirections(){
+
+        int heroRight = level[getCoor(this.posX + 1, this.posY)];
+        int heroLeft = level[getCoor(this.posX - 1, this.posY)];
+        int heroUp = level[getCoor(this.posX, this.posY - 1)];
+        int heroDown = level[getCoor(this.posX, this.posY + 1)];
+
+        //if mobile border or wall
+        canGoRight = (this.posX < 9) && (heroRight != E.WALL);
+        canGoLeft = (this.posX > 0) && (heroLeft!= E.WALL);
+        canGoUp = (this.posY > 0) && (heroUp!= E.WALL);
+        canGoDown = (this.posY < 9) && (heroDown!= E.WALL);
+
+        //if box or green box
+        boxIsLeft = (heroLeft == E.BOX || heroLeft == E.BOXOK);
+        boxIsRight = (heroRight == E.BOX || heroRight == E.BOXOK);
+        boxIsUp = (heroUp==E.BOX || heroUp==E.BOXOK);
+        boxIsDown = (heroDown==E.BOX ||heroDown==E.BOXOK);
     }
 
     private void pushBox(int direction){
@@ -99,14 +106,15 @@ public class GameObject {
             newBoxCoor = oldBoxCoor;
             canMove = false;
         }
+
         level[oldBoxCoor] = E.EMPTY;
         level[newBoxCoor] = E.BOX;
     }
 
-    public boolean won(){ //TODO: vrátí true až po dalším kliknutí
+    private boolean won(){ //TODO: vrátí true až po dalším kliknutí
         boolean won = true;
-        for(int i = 0; i< level.length; i++){
-            if(level[i]==E.BOX) won = false;
+        for (int value : level) {
+            if (value == E.BOX) won = false;
         }
         return won;
     }

@@ -14,10 +14,24 @@ public class GameObject {
         return y*10+x;
     }
     public int heroCoor() {return this.posY*10+this.posX;}
-    public void moveRight(){
+    public void move(int direction) {
 
         E.actualLevel[heroCoor()] = 0;
-        this.posX++;
+
+        switch(direction){
+            case E.RIGHT:
+                this.posX++;
+                break;
+            case E.LEFT:
+                this.posX--;
+                break;
+            case E.UP:
+                this.posY--;
+                break;
+            case E.DOWN:
+                this.posY++;
+                break;
+        }
         E.actualLevel[heroCoor()] = 4;
 
     }

@@ -23,7 +23,6 @@ public class SokoView extends View{
     int ly = 10;
 
 
-
     int width;
     int height;
     GameObject hero = new GameObject(6, 4);
@@ -65,11 +64,12 @@ public class SokoView extends View{
 
                 yDown = event.getY();
 
-                if(xDown>500&&yDown<1500&&yDown>500)  hero.moveRight();
-                else if(xDown<500&&yDown<1500&&yDown>500) Log.i("sokoView", "LEFT - X: "+xDown+", Y: "+yDown);
-                else if(yDown>1500) Log.i("sokoView", "DOWN - X: "+xDown+", Y: "+yDown);
-                else if(yDown<500) Log.i("sokoView", "UP - X: "+xDown+", Y: "+yDown);
+                if(xDown>500&&yDown<1500&&yDown>500)  hero.move(E.RIGHT);
+                else if(xDown<500&&yDown<1500&&yDown>500) hero.move(E.LEFT);
+                else if(yDown>1500) hero.move(E.DOWN);
+                else if(yDown<500) hero.move(E.UP);
                 else Log.i("sokoView", "X: "+xDown+", Y: "+yDown);
+
                 invalidate();
                 break;
             }
@@ -80,8 +80,6 @@ public class SokoView extends View{
     float xDown;
     float yDown;
     int touches = 0;
-    int xDisplay;
-    int yDisplay;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

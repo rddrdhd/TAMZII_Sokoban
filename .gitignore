@@ -59,3 +59,17 @@ captures/
 
 # Version control
 vcs.xml
+
+.DS_Store
+
+app/src/main/java/com/example/sokoban33/_Hero.java
+
+app/src/main/java/com/example/sokoban33/_SokoViewClass.java
+
+app/src/main/java/com/example/sokoban33/_SokoViewCopy.java
+
+app/src/main/java/com/example/sokoban33/Hero.java
+
+app/src/main/java/com/example/sokoban33/SokoViewClass.java
+
+app/src/main/java/com/example/sokoban33/SokoViewCopy.java

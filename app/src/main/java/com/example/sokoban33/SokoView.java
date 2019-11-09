@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by kru13 on 12.10.16.
@@ -19,15 +18,14 @@ public class SokoView extends View{
 
     Bitmap[] bmp;
 
-
-    int[] level = E.actualLevelArray.clone();
+    int[] originalLevel = E.actualLevelArray.clone();
     int lx = 10;
     int ly = 10;
 
 
     int width;
     int height;
-    GameObject hero = new GameObject(6,4);
+    GameObject hero = new GameObject(E.startX,E.startY);
 
     public SokoView(Context context) {
         super(context);
@@ -56,36 +54,32 @@ public class SokoView extends View{
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getAction()){
-            case MotionEvent.ACTION_DOWN: {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            touches++;
+            xDown = event.getX();
+            yDown = event.getY();
 
-                touches++;
-                xDown = event.getX();
-                yDown = event.getY();
+            if (xDown > 500 && yDown < 1500 && yDown > 500) hero.move(E.RIGHT);
+            else if (xDown < 500 && yDown < 1500 && yDown > 500) hero.move(E.LEFT);
+            else if (yDown > 1500) hero.move(E.DOWN);
+            else if (yDown < 500) hero.move(E.UP);
+            else Log.i("sokoView", "X: " + xDown + ", Y: " + yDown);
 
-                if(xDown>500&&yDown<1500&&yDown>500)  hero.move(E.RIGHT);
-                else if(xDown<500&&yDown<1500&&yDown>500) hero.move(E.LEFT);
-                else if(yDown>1500) hero.move(E.DOWN);
-                else if(yDown<500) hero.move(E.UP);
-                else Log.i("sokoView", "X: "+xDown+", Y: "+yDown);
+            repairCrosses();
 
-                repairCrosses();
-
-                invalidate();
-
-                break;
-            }
+            invalidate();
         }
         return super.onTouchEvent(event);
     }
 
     public void repairCrosses(){
-        for(int i = 0; i<level.length; i++){
-            if(level[i]!=E.actualLevelArray[i]) Log.i("HeroPos", "level: "+level[i]+". E level:"+E.actualLevelArray[i]);
-            if(level[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY) E.actualLevelArray[i]=E.CROSS;
-            if(level[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX) E.actualLevelArray[i]=E.BOXOK;
+        for(int i = 0; i< originalLevel.length; i++){
+            if(originalLevel[i]!=E.actualLevelArray[i]) Log.i("HeroPos", "originalLevel: "+ originalLevel[i]+". E originalLevel:"+E.actualLevelArray[i]);
+            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY) E.actualLevelArray[i]=E.CROSS;
+            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX) E.actualLevelArray[i]=E.BOXOK;
 
         }
         Log.i("HeroPos", "__________________________________");

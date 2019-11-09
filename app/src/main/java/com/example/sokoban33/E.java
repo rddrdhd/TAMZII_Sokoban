@@ -1,6 +1,10 @@
 package com.example.sokoban33;
 
 public class E {
+//globals
+    public static int actualLevel = 0;
+
+//constants
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int UP = 2;
@@ -14,7 +18,13 @@ public class E {
     public static final int BOXOK = 5;
 
 
-    public static int[][] LEVELS = {
+
+    public static final int[][] STARTING_POSITIONS = {
+            {6,4}
+    };
+
+
+    public static final int[][] LEVELS = {
             {//0
             1,1,1,1,1,1,1,1,1,0,
             1,0,0,0,0,0,0,0,1,0,
@@ -27,6 +37,9 @@ public class E {
             1,1,1,1,1,1,1,1,1,0,
             0,0,0,0,0,0,0,0,0,0}
     };
-    public static int actualLevel = 0;
+
+
     public static int[] actualLevelArray = LEVELS[actualLevel];
+    public static final int startX = STARTING_POSITIONS[actualLevel][0];
+    public static final int startY = STARTING_POSITIONS[actualLevel][1];
 }

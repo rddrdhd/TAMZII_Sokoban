@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -66,6 +67,7 @@ public class SokoView extends View{
             touches++;
             xDown = event.getX();
             yDown = event.getY();
+            Toast.makeText(getContext(), "X: "+xDown+", Y: "+yDown, Toast.LENGTH_LONG).show();
 
             if (xDown > 500 && yDown < 1500 && yDown > 500) hero.move(E.RIGHT);
             else if (xDown < 500 && yDown < 1500 && yDown > 500) hero.move(E.LEFT);

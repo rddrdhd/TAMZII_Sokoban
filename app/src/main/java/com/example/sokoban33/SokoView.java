@@ -92,7 +92,7 @@ public class SokoView extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         width = w / ly;
-        height = (int) (h / 1.0666 /lx);
+        height = (int) (h /lx);
         super.onSizeChanged(w, h, oldw, oldh);
     }
 

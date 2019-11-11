@@ -12,12 +12,31 @@
         android:layout_width="302dp"
         android:layout_height="279dp"
         android:fontFamily="serif-monospace"
-        android:text="PLAY"
         android:onClick="play"
+        android:text="PLAY"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.148" />
+
+    <Button
+        android:id="@+id/button2"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
+        android:layout_width="302dp"
+        android:layout_height="279dp"
+        android:fontFamily="serif-monospace"
+        android:onClick="levels"
+        android:text="LEVELS"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.869" />
 </android.support.constraint.ConstraintLayout>

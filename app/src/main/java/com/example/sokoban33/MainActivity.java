@@ -17,4 +17,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, SokoActivity.class);
         startActivity(i);
     }
+
+    public void levels(View view) {
+        Intent i = new Intent(this, LevelsActivity.class);
+        startActivity(i);
+    }
 }

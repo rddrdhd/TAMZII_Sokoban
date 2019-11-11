@@ -6,8 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -59,24 +59,38 @@ public class SokoView extends View{
         bmp[5] = BitmapFactory.decodeResource(getResources(), R.drawable.boxok);
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            touches++;
-            xDown = event.getX();
-            yDown = event.getY();
+            if(E.undoig){
+                E.actualLevelArray = E.undoLevelArray.clone();
+                E.undoig = false;
+                invalidate(); //redraw array
+            } else {
 
-            if (xDown > 500 && yDown < 1500 && yDown > 500) hero.move(E.RIGHT);
-            else if (xDown < 500 && yDown < 1500 && yDown > 500) hero.move(E.LEFT);
-            else if (yDown > 1500) hero.move(E.DOWN);
-            else if (yDown < 500) hero.move(E.UP);
+                E.undoLevelArray = E.actualLevelArray.clone();
+                touches++;
 
-            fixArray();
-            invalidate(); //redraw array
+                xDown = event.getX();
+                yDown = event.getY();
+                if (xDown > 500 && yDown < 1500 && yDown > 500)
+                    hero.move(E.RIGHT);
+                else if (xDown < 500 && yDown < 1500 && yDown > 500)
+                    hero.move(E.LEFT);
+                else if (yDown > 1500)
+                    hero.move(E.DOWN);
+                else if (yDown < 500)
+                    hero.move(E.UP);
 
-            if(hero.won()){
-                Toast.makeText(getContext(), "You won! ("+touches+" touches)", Toast.LENGTH_LONG).show();
+                fixArray();
+                invalidate(); //redraw array
+
+
+                if(hero.won()){
+                    Toast.makeText(getContext(), "You won! ("+touches+" touches)", Toast.LENGTH_LONG).show();
+                }
             }
         }
         return super.onTouchEvent(event);

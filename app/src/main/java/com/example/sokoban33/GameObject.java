@@ -21,6 +21,7 @@ class GameObject {
         if (E.resetingLevel){
             this.posX = E.startX;
             this.posY = E.startY;
+            E.touches = 0;
             E.resetingLevel = false;
         }
 

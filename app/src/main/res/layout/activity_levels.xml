@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".LevelsActivity">
 
+    <!--ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#1D1D1D"
+        android:divider="#A2A2A2"
+        android:dividerHeight="2px">
+    </ListView-->
+
+
+    <Button
+        android:id="@+id/buttLev0"
+        android:layout_width="297dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="128dp"
+        android:text="Level 0"
+        android:onClick="setLevel0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttLev1"
+        android:layout_width="407dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="372dp"
+        android:text="Level 1"
+        android:onClick="setLevel1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttLev2"
+        android:layout_width="407dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="600dp"
+        android:text="Level 2"
+        android:onClick="setLevel2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.sokoban33;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,10 +22,11 @@ public class SokoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.levels:
-                // do something
+                Intent i = new Intent(this, LevelsActivity.class);
+                startActivity(i);
                 return true;
-            case R.id.reset:
 
+            case R.id.reset:
                 View sokoV = findViewById(R.id.sokoView);
                 E.actualLevelArray = E.LEVELS[E.actualLevel].clone();
                 E.resetingLevel = true;

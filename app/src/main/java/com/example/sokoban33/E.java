@@ -1,10 +1,11 @@
 package com.example.sokoban33;
 
 public class E {
-//globals
-    public static int actualLevel = 0;
+    //globals
+    public static int actualLevel = 1;
+    public static boolean resetingLevel = false;
 
-//constants
+    //constants
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int UP = 2;
@@ -51,8 +52,10 @@ public class E {
         },
     };
 
+    //actual level & redo backup
+    public static int[] actualLevelArray = LEVELS[actualLevel].clone();
 
-    public static int[] actualLevelArray = LEVELS[actualLevel];
+    //starting positions set
     public static int startX = STARTING_POSITIONS[actualLevel][0];
     public static int startY = STARTING_POSITIONS[actualLevel][1];
 }

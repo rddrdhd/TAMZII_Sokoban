@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#2C89FA"
+    tools:context=".SokoActivity">
 
     <com.example.sokoban33.SokoView
         android:id="@+id/sokoView"

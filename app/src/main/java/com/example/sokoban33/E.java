@@ -3,7 +3,7 @@ package com.example.sokoban33;
 public class E {
     //globals
     public static int actualLevel = 1;
-    public static boolean undoig = false;
+    public static boolean resetingLevel = false;
 
     //constants
     public static final int LEFT = 0;
@@ -53,8 +53,7 @@ public class E {
     };
 
     //actual level & redo backup
-    public static int[] actualLevelArray = LEVELS[actualLevel];
-    public static int[] undoLevelArray = LEVELS[actualLevel];
+    public static int[] actualLevelArray = LEVELS[actualLevel].clone();
 
     //starting positions set
     public static int startX = STARTING_POSITIONS[actualLevel][0];

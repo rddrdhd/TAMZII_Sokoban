@@ -5,23 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 public class SokoActivity extends AppCompatActivity {
-Button buttUndo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-/*
-        buttUndo = findViewById(R.id.butt);
-        buttUndo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                E.undoig = true;
-            }
-        });
-*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,19 +23,17 @@ Button buttUndo;
             case R.id.levels:
                 // do something
                 return true;
-            case R.id.back:
-                // do something
+            case R.id.reset:
+
+                View sokoV = findViewById(R.id.sokoView);
+                E.actualLevelArray = E.LEVELS[E.actualLevel].clone();
+                E.resetingLevel = true;
+                sokoV.invalidate();
                 return true;
-            case R.id.resume:
-                // do something
-                return true;
+
             default:
                 return super.onContextItemSelected(item);
 
         }
-    }
-
-    public void undo(View view){
-        E.undoig = true;
     }
 }

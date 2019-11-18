@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 /**
  * Created by kru13 on 12.10.16.
  */
@@ -64,13 +66,7 @@ public class SokoView extends View{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(E.undoig){
-                E.actualLevelArray = E.undoLevelArray.clone();
-                E.undoig = false;
-                invalidate(); //redraw array
-            } else {
 
-                E.undoLevelArray = E.actualLevelArray.clone();
                 touches++;
 
                 xDown = event.getX();
@@ -91,15 +87,17 @@ public class SokoView extends View{
                 if(hero.won()){
                     Toast.makeText(getContext(), "You won! ("+touches+" touches)", Toast.LENGTH_LONG).show();
                 }
-            }
+
         }
         return super.onTouchEvent(event);
     }
 
     private void fixArray(){
         for(int i = 0; i< originalLevel.length; i++){
-            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY) E.actualLevelArray[i]=E.CROSS;
-            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX) E.actualLevelArray[i]=E.BOXOK;
+            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.EMPTY)
+                E.actualLevelArray[i]=E.CROSS;
+            if(originalLevel[i]==E.CROSS&&E.actualLevelArray[i]==E.BOX)
+                E.actualLevelArray[i]=E.BOXOK;
         }
     }
 
@@ -122,4 +120,5 @@ public class SokoView extends View{
         }
 
     }
+
 }

@@ -24,16 +24,18 @@ public class SokoView extends View{
     GameObject hero = new GameObject(E.startX,E.startY);
     int[] originalLevel = E.actualLevelArray.clone();
 
+    //screed divide
     int lx = 10;
     int ly = 10;
 
+    //phone
     int width;
     int height;
 
+    //touch
     float xDown;
     float yDown;
 
-    int touches = 0;
 
     public SokoView(Context context) {
         super(context);
@@ -67,7 +69,7 @@ public class SokoView extends View{
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-                touches++;
+                E.touches++;
 
                 xDown = event.getX();
                 yDown = event.getY();
@@ -83,9 +85,10 @@ public class SokoView extends View{
                 fixArray();
                 invalidate(); //redraw array
 
-
                 if(hero.won()){
-                    Toast.makeText(getContext(), "You won! ("+touches+" touches)", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),
+                            "You won! ("+E.touches+" touches)", Toast.LENGTH_LONG
+                    ).show();
                 }
 
         }
@@ -118,7 +121,5 @@ public class SokoView extends View{
                         new Rect(j*width, i*height,(j+1)*width, (i+1)*height), null);
             }
         }
-
     }
-
 }
